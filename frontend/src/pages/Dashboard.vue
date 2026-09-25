@@ -1,7 +1,10 @@
 <template>
   <el-container class="page">
     <el-header class="topbar">
-      <h1>{{ APP_TITLE }}</h1>
+      <h1>
+        {{ APP_TITLE }}
+        <el-link href="/absence-fill" class="fill-entry" type="primary">缺岗补位 →</el-link>
+      </h1>
       <el-select v-model="department" @change="load">
         <el-option label="急诊科" value="急诊科" />
         <el-option label="心内科" value="心内科" />
@@ -74,3 +77,11 @@ async function load() {
 
 onMounted(load);
 </script>
+
+<style scoped>
+.fill-entry {
+  margin-left: 14px;
+  font-size: 14px;
+  font-weight: normal;
+}
+</style>
