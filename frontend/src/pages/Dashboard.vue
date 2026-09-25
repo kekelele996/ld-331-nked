@@ -35,6 +35,24 @@
       </el-card>
 
       <section class="grid">
+        <AbsencePanel :department="department" :default-date="defaultDate" @updated="load" />
+        <el-card shadow="never">
+          <template #header>补位审计</template>
+          <el-table :data="audits" height="300" empty-text="暂无补位审计记录">
+            <el-table-column prop="processedAt" label="处理时间" width="150" />
+            <el-table-column prop="operator" label="发起人" width="90" />
+            <el-table-column label="原安排" min-width="130">
+              <template #default="{ row }">{{ row.originalStaff }}（{{ row.originalShift }}）</template>
+            </el-table-column>
+            <el-table-column prop="substitute" label="补位人" width="90" />
+            <el-table-column label="班次" width="150">
+              <template #default="{ row }">{{ row.date }} {{ row.shift }}</template>
+            </el-table-column>
+          </el-table>
+        </el-card>
+      </section>
+
+      <section class="grid">
         <el-card shadow="never">
           <template #header>调班与替班申请</template>
           <el-table :data="data.requests" height="240">
@@ -59,17 +77,23 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
+import { fetchBackfillAudits } from '../api/absence';
 import { fetchDashboard } from '../api/schedule';
+import AbsencePanel from '../components/AbsencePanel.vue';
 import ScheduleBoard from '../components/ScheduleBoard.vue';
 import { APP_TITLE } from '../constants/app';
-import type { DashboardData } from '../types/schedule';
+import type { BackfillAudit, DashboardData } from '../types/schedule';
 
 const department = ref('急诊科');
 const data = reactive<DashboardData>({ rules: [], schedule: [], conflicts: [], requests: [], stats: [] });
+const audits = ref<BackfillAudit[]>([]);
+
+const defaultDate = computed(() => data.schedule[0]?.date ?? '');
 
 async function load() {
   Object.assign(data, await fetchDashboard(department.value));
+  audits.value = await fetchBackfillAudits(department.value);
 }
 
 onMounted(load);

@@ -33,6 +33,42 @@ export interface WorkStats {
   overtimeHours: number;
 }
 
+export interface Absence {
+  id: number;
+  date: string;
+  department: string;
+  position: string;
+  shift: string;
+  staffName: string;
+  reason: string;
+  status: string;
+  reportedBy: string;
+  substitute: string | null;
+  createdAt: string;
+  processedAt: string | null;
+}
+
+export interface BackfillCandidate {
+  staffName: string;
+  position: string;
+  skills: string[];
+  matchedSkills: string[];
+  dayStatus: string;
+}
+
+export interface BackfillAudit {
+  id: number;
+  absenceId: number;
+  department: string;
+  date: string;
+  shift: string;
+  originalStaff: string;
+  originalShift: string;
+  substitute: string;
+  operator: string;
+  processedAt: string;
+}
+
 export interface DashboardData {
   rules: string[];
   schedule: ScheduleItem[];

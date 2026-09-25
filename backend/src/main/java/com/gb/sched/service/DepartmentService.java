@@ -11,9 +11,11 @@ public class DepartmentService {
     return List.of(
         new Department("急诊科", List.of(
             new Position("主任医师", 1, List.of("急救", "质控")),
-            new Position("护士", 8, List.of("分诊", "抢救")))),
+            new Position("主治医师", 2, List.of("急救", "心电")),
+            new Position("护士", 4, List.of("分诊", "抢救")))),
         new Department("心内科", List.of(
-            new Position("主治医师", 4, List.of("介入", "心电")),
-            new Position("护士长", 1, List.of("病区管理")))));
+            new Position("主治医师", 2, List.of("介入", "心电")),
+            new Position("护士长", 1, List.of("病区管理")),
+            new Position("护士", 2, List.of("病区管理", "心电")))));
   }
 }

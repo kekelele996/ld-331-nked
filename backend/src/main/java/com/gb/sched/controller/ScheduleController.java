@@ -30,7 +30,7 @@ public class ScheduleController {
 
   @GetMapping("/dashboard")
   public Map<String, Object> dashboard(@RequestParam(name = "department", defaultValue = "急诊科") String department) {
-    List<ScheduleItem> schedule = scheduleRuleService.generateMonthlySchedule(department);
+    List<ScheduleItem> schedule = scheduleRuleService.getSchedule(department);
     return Map.of(
         "rules", List.of("连续工作不超过 5 天", "周末轮循", "夜班后不接白班", "节假日按优先级排班"),
         "schedule", schedule,
@@ -42,5 +42,13 @@ public class ScheduleController {
   @GetMapping("/departments")
   public List<Department> departments() {
     return departmentService.listDepartments();
+  }
+
+  @GetMapping("/schedule/shift")
+  public List<ScheduleItem> shiftAssignments(
+      @RequestParam(name = "department") String department,
+      @RequestParam(name = "date") String date,
+      @RequestParam(name = "shift") String shift) {
+    return scheduleRuleService.staffOnShift(department, date, shift);
   }
 }
